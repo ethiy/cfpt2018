@@ -4,7 +4,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{babel}
-\usepackage{times}
+\usepackage{times, fourier}
+
+\usepackage{booktabs}
 
 \begin{document}
     \date{}
@@ -17,7 +19,7 @@
         \end{tabular}
         {}\\
         \\
-        ${}^1$        Univ. Paris-Est, LaSTIG MATIS, IGN, ENSG, F-94165 Saint-Mandé, France\\
+        ${}^1$        Univ. Paris-Est, LaSTIG MATIS, IGN, ENSG, 94160 Saint-Mandé, France\\
         ${}^2$        Inria, Titane, 06902 Sophia Antipolis, France
         {}\\
         \\
@@ -26,13 +28,50 @@
     \maketitle
     \thispagestyle{empty}
 
-    \begin{abstract}
-        La reconstruction automatique de scènes urbaines est l'objet d'intérêt de la communauté scientifique autant que les industriels. Cependant, même les derniers algorithmes de modélisation urbaines ne sont pas viables du point de vue opérationel. Nous proposons donc une méthode de qualification automatique de modèle de bâtiments 3D. Une taxonomy, qui hierarchise les erreurs possibles que l'on peut relever sur un modèle 3D urbain, est proposée. Le problème de qualification devient ainsi un problème de classification supervisée. Des attributs sont calculées à partir de la forme géométrique du modèle, aussi qu'en se basant sur des Modèles Numérique de Surface ainsi que sur les orthoimages. Nous montrons à la fin des résultats de classifications faites sur une régions de $502$ bâtiments hétéroclites dans la ville d'\'Elancourt.
-    \end{abstract}
     \section{Introduction}
+    \begin{itemize}
+        \item Les modèles 3D urbains ont un champs d'application~\cite{Biljecki2015} (\textit{c.f.} Table~\ref{tab::3d_applications}).
+        \item La reconstruction automatique de scènes urbaines est l'objet d'intérêt de la communauté scientifique autant que les industriels\cite{Musialski2012}.
+        \item Même les derniers algorithmes de modélisation automatiques urbaines ne sont pas viables du point de vue opérationel.
+        \item Exemple opérationnel: la solution à l'IGN~\cite{taillandier2004reconstruction,Taillandier2004, Durupt2006} industrialisée sous le nom Bati3D, requiert autant d'effort des opérateurs que de saisir les surfaces à la main.
+    \end{itemize}
+
+    \begin{table}[h!]
+        \begin{center}
+            \begin{tabular}{l l l}
+                \toprule
+                Planification & Simulation & Visualisation \\
+                \midrule
+                Plannification urbaine & Microclimat & Architecture \\
+                Intervention d'urgence & Propagation d'onde
+ & Cadastre \\
+                Décoration d'intérieur & Ruisselement d'eau & Tourisme \\
+                Réseau de communication & Intervention armée & Jeux video \\
+                \bottomrule
+            \end{tabular}
+            \caption{\label{tab::3d_applications} Bref recensement des applications des modèles $3D$ urbains~\cite{Biljecki2015, Scholze2002}.}
+        \end{center}
+    \end{table}
+
+    Les méthodes de diagnostique prédictives permettrons:
+    \begin{itemize}
+        \item la détection de changement.
+        \item la correction des modèles urbains.
+        \item l'évaluation, et ainsi la sélection, d'algorithmes de revonstruction urbaines.
+        \item l'évaluation de la qualité de reconstruction par la foule.
+    \end{itemize}
+
+    Les contributions majeures:
+    \begin{itemize}
+        \item Une nouvelle taxonomie est considérée pour hiérarchiser les erreurs qui peuvent affecter les modèles 3D de bâtiments. Elle est indépendente des démarches de reconstruction 3D et flexibles quant aux différents types de modèles en entré.
+        \item La qualification est donc formulée comme un problème de classification supervisée.
+        \item Une référence d'attributs est calculée à partir de la géométrie du modèle de bâtiments en entrée. Des attributs basés sur la comparaison avec les orthoimages ou le Modèle Numérique de surface.
+    \end{itemize}
     \section{\'Etat de l'art}
-    \section{Taxonomy d'erreurs}
+    \section{Taxonomie d'erreurs}
     \section{Méthode proposée}
     \section{Conclusion et perspectives}
+
+    \bibliographystyle{plain}
     \bibliography{references}
 \end{document}
