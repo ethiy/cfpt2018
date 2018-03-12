@@ -8,10 +8,14 @@
 
 \usepackage{booktabs}
 
+\usepackage{siunitx}
+
+\usepackage{standalone}
+
 \begin{document}
     \date{}
     \title{
-        \Large\bf Autoqualification de modèle 3D de bâtiments pour l'évaluation de méthode de reconstruction.
+        \Large\bf Autoqualification de modèle $3D$ de bâtiments pour l'évaluation de méthode de reconstruction.
     }
     \author{
         \begin{tabular}[t]{c@{\extracolsep{4em}}c@{\extracolsep{4em}}c@{\extracolsep{4em}}c}
@@ -30,7 +34,7 @@
 
     \section{Introduction}
     \begin{itemize}
-        \item Les modèles 3D urbains ont un champs d'application~\cite{Biljecki2015} (\textit{c.f.} Table~\ref{tab::3d_applications}).
+        \item Les modèles $3D$ urbains ont un champs d'application~\cite{Biljecki2015} (\textit{c.f.} Table~\ref{tab::3d_applications}).
         \item La reconstruction automatique de scènes urbaines est l'objet d'intérêt de la communauté scientifique autant que les industriels\cite{Musialski2012}.
         \item Même les derniers algorithmes de modélisation automatiques urbaines ne sont pas viables du point de vue opérationel.
         \item Exemple opérationnel: la solution à l'IGN~\cite{taillandier2004reconstruction,Taillandier2004, Durupt2006} industrialisée sous le nom Bati3D, requiert autant d'effort des opérateurs que de saisir les surfaces à la main.
@@ -63,15 +67,43 @@
 
     Les contributions majeures:
     \begin{itemize}
-        \item Une nouvelle taxonomie est considérée pour hiérarchiser les erreurs qui peuvent affecter les modèles 3D de bâtiments. Elle est indépendente des démarches de reconstruction 3D et flexibles quant aux différents types de modèles en entré.
+        \item Une nouvelle taxonomie est considérée pour hiérarchiser les erreurs qui peuvent affecter les modèles $3D$ de bâtiments. Elle est indépendente des démarches de reconstruction $3D$ et flexibles quant aux différents types de modèles en entré.
         \item La qualification est donc formulée comme un problème de classification supervisée.
         \item Une référence d'attributs est calculée à partir de la géométrie du modèle de bâtiments en entrée. Des attributs basés sur la comparaison avec les orthoimages ou le Modèle Numérique de surface.
     \end{itemize}
     \section{\'Etat de l'art}
+    On peut classifier les méthodes d'évaluation de modèles urbains selon deux critères:
+    \begin{itemize}
+        \item le type de sortie: macro-indices géométriques, erreurs topologiques ou géométriques. Les indices géométriques peuvent résumer la précision d'une modélisation mais ne permettent pas de bien décrire les erreurs: un simple maillage $3D$ de points LiDAR ou de MNS donneront une meilleur reconstruction dans ce cas~\cite{rottensteiner2014results}. Une taxonomie d'erreurs pourrait palier à ce déficit mais peut, par contre, facilement être surajustée à une scène ou aux données d'entrées.
+        \item le type de données de référence: Modèle de très grande précision géométriques, données issu de la photogrammétrie ou modèles de classification. Les modèle urbains de grands précisions ne sont pas facile à acquérir. Même si elles sont indépendentes des modèles à qualifier, il n'est pas facile d'en produire assez, en grande variété, afin de bien évaluer les méthodes de reconstruction. Les données photogrammétriques, étant non structurées, ne permettent pas, de leur part, de relever les erreurs sémantiques~\cite{Akca2010}. Les modèles de classification sont bien moins couteux en ressources pour prédire la qualité des modèles urbains. Ils sont, en revanche, aussi potent que la taxonomie d'erreurs sur laquelle repose la classification.
+    \end{itemize}
+
+    \begin{itemize}
+        \item \cite{Henricsson1997} extrait des indices de complétude, précision géométrique et disparité de forme. Ces indices sont calculés à partir de modèle $3D$ de référence acquis manuellement avec $\pm \SI{10}{\cm}$ d'erreur estimée.
+        \item En analysant les sources d'erreurs dans les méthodes de modèlisation urbaines, \cite{Voegtle2003} propose deux indices géomètriques: précision de position et de hauteur. Les données sont aussi construit à partir de mesures géodésiques d'erreurs relatives de $\pm \SI{5}{\cm}$.
+        \item \cite{Zeng2014} propose une estimation de précision du modèle urbain en comparant, par rapport à un modèle manuellement reconstruit, les écarts de volume, les différences entre surfaces en utilisant l'expansion SPHARM~\cite{brechbuhler1995parametrization} et l'écart positionel de points d'intérêts.
+        \item \cite{Kaartinen2005} compare des mesures de position et de distance sur des points d'intérêts ainsi que les inclinaisons de toit de bâtiments avec des données de références de pécision estimée à $\vert\vert \sigma_{xy} \vert\vert \leq \SI{8.3}{\cm} \text{ et } \vert \vert \sigma_z \vert\vert \leq \SI{3.5}{\cm}$
+        \item \cite{Akca2010} utilise les nuages de points LiDAR pour sortir trois types d'erreurs: systématique, grossière ou aléatoire. Les erreurs systématiques proviennent de la différences de systèmes de références et de position de bâtiments individuels. Les erreurs de complétudes relèvent les parties manquantes d'un bâtiments reconstruit alors que les erreurs aléatoire résultent du bruit intrinsèque des capteurs.
+        \item \cite{OudeElberink2010} propose aussi de comparer les modèles de reconstructions aux points LiDAR. Ils relèvent, ainsi, visualement des erreurs sémantiques --- ou topologiques --- en comparant et analysant les résiduels tridimensionnels du modèle et les points LiDAR correspondants.
+    \end{itemize}
+
+    \begin{itemize}
+        \item \cite{Boudet2006} propose un nouveau cadre d'étude, où la qualification se résume à une prédiction d'erreurs à partir d'un modèle de classification préentraîné. La taxonomie proposée repose sur le paradigme des feux de circulation: Correct, acceptable, généralisé et faux. Chaque erreur correspond à un degré de confiance de l'exactitude du modèles à classer. Les attributs sont calculés à partir des images orientées. On calcule des indices de cohérence de texture de facettes, en mesurant la corélation entre images orientées, et des indices de cohérence structurelle, en comparant les segements 3D extraits des images avec le modèle d'entrée. En se basant sur les indices ainsi calculer des seuils sont définis pour décider de la qualité du model (i.e. arbre de décision).
+        \item \cite{Michelin2013} porpose quant à lui une taxonomy basée sur les défault topologique ou géométrique qui peuvent affecter des modèles de niveau de détail $LoD2$~\cite{kolbe2005citygml}. Neuf erreurs relevées sont hiérarchiséss selon leurs type: Erreurs d'empreinte (contour erroné, bâtiment inexistant, cours intérieur manquante et empreinte imprécise), erreurs de reconstruction (sous-segmentation, sur-segmentation, toit inexact, translation en Z) et erreurs de végétation. Les attributs calculés sont calculés à partir de segments $3D$ extrait des images orientées, ou à partir de MNS. Ces segments 3D seront comparés aux segments du modèles à classifier. Les attributs sont extraits aussi à travers l'angle de vue du ciel ou encore du masque NDVI.
+    \end{itemize}
+
     \section{Taxonomie d'erreurs}
+
+    \begin{figure}[h!]
+        \begin{center}
+            \includestandalone[mode=buildnew, width=\textwidth]{mind_map}
+            \caption{\label{fig::mindmap_errors} Carte mentale qui résume la taxonomie d'erreur établie.}
+        \end{center}
+    \end{figure}
+
     \section{Méthode proposée}
     \section{Conclusion et perspectives}
 
-    \bibliographystyle{plain}
+    \bibliographystyle{abbrv}
     \bibliography{references}
 \end{document}
