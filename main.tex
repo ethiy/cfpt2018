@@ -56,7 +56,7 @@
         \item Exemple opérationnel: la solution à l'IGN~\cite{taillandier2004reconstruction,Taillandier2004, Durupt2006} industrialisée sous le nom Bati3D, requiert autant d'effort des opérateurs que de saisir les surfaces à la main.
     \end{itemize}
 
-    \begin{table}[h!]
+    \begin{table}[H]
         \begin{center}
             \begin{tabular}{l l l}
                 \toprule
@@ -105,14 +105,14 @@
 
     \begin{itemize}
         \item \cite{Boudet2006} propose un nouveau cadre d'étude, où la qualification se résume à une prédiction d'erreurs à partir d'un modèle de classification préentraîné. La taxonomie proposée repose sur le paradigme des feux de circulation: Correct, acceptable, généralisé et faux. Chaque erreur correspond à un degré de confiance de l'exactitude du modèles à classer. Les attributs sont calculés à partir des images orientées. On calcule des indices de cohérence de texture de facettes, en mesurant la corélation entre images orientées, et des indices de cohérence structurelle, en comparant les segements 3D extraits des images avec le modèle d'entrée. En se basant sur les indices ainsi calculer des seuils sont définis pour décider de la qualité du model (i.e. arbre de décision).
-        \item \cite{Michelin2013} porpose quant à lui une taxonomy basée sur les défault topologique ou géométrique qui peuvent affecter des modèles de niveau de détail $LoD2$~\cite{kolbe2005citygml}. La catégorisation des erreurs étudiée dans \cite{Michelin2013} adopte le point de vue des méthodes de reconstruction. Elle différencie entre les erreurs d'empreinte, qui proviendrait des données d'entrées de la modélisation, les erreurs de reconstruction intinsèques à la méthode et une erreur due à l'occlusion végétale. Neuf erreurs, en total, sont relevées: Erreurs d'empreinte (contour erroné, bâtiment inexistant, cours intérieur manquante et empreinte imprécise), erreurs de reconstruction (sous-segmentation, sur-segmentation, toit inexact, translation en Z) et erreurs de végétation. Les attributs calculés sont calculés à partir de segments $3D$ extrait des images orientées, ou à partir de MNS. Ces segments 3D seront comparés aux segments du modèles à classifier. Les attributs sont extraits aussi à travers l'angle de vue du ciel ou encore du masque NDVI.
+        \item \cite{Michelin2013} porpose quant à lui une taxonomy basée sur les défault topologique ou géométrique qui peuvent affecter des modèles de Niveau de Détail $LoD2$~\cite{kolbe2005citygml}. La catégorisation des erreurs étudiée dans \cite{Michelin2013} adopte le point de vue des méthodes de reconstruction. Elle différencie entre les erreurs d'empreinte, qui proviendrait des données d'entrées de la modélisation, les erreurs de reconstruction intinsèques à la méthode et une erreur due à l'occlusion végétale. Neuf erreurs, en total, sont relevées: Erreurs d'empreinte (contour erroné, bâtiment inexistant, cours intérieur manquante et empreinte imprécise), erreurs de reconstruction (sous-segmentation, sur-segmentation, toit inexact, translation en Z) et erreurs de végétation. Les attributs calculés sont calculés à partir de segments $3D$ extrait des images orientées, ou à partir de MNS. Ces segments 3D seront comparés aux segments du modèles à classifier. Les attributs sont extraits aussi à travers l'angle de vue du ciel ou encore du masque NDVI.
     \end{itemize}
 
     \section{Taxonomie d'erreurs}
 
     La taxonomie proposée regroupe les erreurs rencontrées selon l'échelle d'étude.
     \begin{itemize}
-        \item une famille d'erreurs est consacrée aux défauts qui affectent le bâtiment en entier. Cela corresponderais à un niveau de détail $LoD 0\cup LoD 1$. Elle est nommée: \emph{Erreurs de Bâtiment}.
+        \item une famille d'erreurs est consacrée aux défauts qui affectent le bâtiment en entier. Cela corresponderais à un Niveau de Détail $LoD 0\cup LoD 1$. Elle est nommée: \emph{Erreurs de Bâtiment}.
         \item une famille contient les erreurs qui concernent les facettes --- façades ou toit --- du bâtiments (niveau $LoD 2$): \emph{Erreurs de Facettes}.
         \item une famille englobe les erreurs qui éteignent les mircrostructures reconstruites (niveau $LoD 3$): \emph{Erreurs de Microstructures}.
         \item Du point de vue opérationnel, pas tout les bâtiments sont qualifiables. C'est ainsi qu'une famille est elle créée pour rassembler ces types d'erreurs: \emph{Bâtiments non qualifiables}.
@@ -125,7 +125,7 @@
         \item On attribut pour chaque erreur atomique une note sur une échelle de $0$ à $10$. Elle représente le degré de confiance en la présence du défaut. Cela revient à une discrétisation de la probabilité d'existence de l'erreur.
     \end{itemize}
 
-    Nous appliquons cette approche à une surface de $\SI{0.2}{\km \squared}$ contenant $502$ bâtiments dans la ville d'\'Elancourt. C'est une région résidentielle dense qui comprends surtout des bâtiments à deux pans de toit, une école au Nord Ouest du quartier et une station-service au Sud. Les modèles d'entrées sont générés à partir d'une version industrialisée de~\cite{Durupt2006}. La méthode repose que une base de données d'empreinte de bâtiments (cadastrales ou autes) et l'extrapolation de la topologie du toit. Les toits simulés à partir des images orientées sont confrontés au MNS à $\SI{6}{\cm}$ de résolution. Les façades du modèle relie la line de goutière aux sol. On obtient une modélisation $2.5D$ de la scène à un niveau de détail $LoD 2$.
+    Nous appliquons cette approche à une surface de $\SI{0.2}{\km \squared}$ contenant $502$ bâtiments dans la ville d'\'Elancourt. C'est une région résidentielle dense qui comprends surtout des bâtiments à deux pans de toit, une école au Nord Ouest du quartier et une station-service au Sud. Les modèles d'entrées sont générés à partir d'une version industrialisée de~\cite{Durupt2006}. La méthode repose que une base de données d'empreinte de bâtiments (cadastrales ou autes) et l'extrapolation de la topologie du toit. Les toits simulés à partir des images orientées sont confrontés au MNS à $\SI{6}{\cm}$ de résolution. Les façades du modèle relie la line de goutière aux sol. On obtient une modélisation $2.5D$ de la scène à un Niveau de Détail $LoD 2$.
 
     Confronté à cette base de données, on relève les erreurs suivantes:
 
@@ -154,7 +154,7 @@
     \end{enumerate}
 
     \thisfloatsetup{heightadjust=object}
-    \begin{figure}[h!]
+    \begin{figure}[H]
         \begin{center}
             \ffigbox{
                 \ffigbox[\FBwidth]{
@@ -218,7 +218,7 @@
     Les erreurs ci-répértoriées sont représentées dans une carte heuristique \textit{c.f.} Figure~\ref{fig::mindmap_errors}. Les statistiques de ces erreurs sont résumées dans la Tableau~\ref{tab::label_stats}.
 
 
-    \begin{figure}[h!]
+    \begin{figure}[H]
         \begin{center}
             \includestandalone[mode=buildnew, width=\textwidth]{mind_map}
             \caption{\label{fig::mindmap_errors} Carte mentale qui résume la taxonomie d'erreur établie.}
@@ -268,6 +268,85 @@
 
 
     \section{Méthode proposée}
+
+    \begin{itemize}
+        \item La méthode proposée consiste à évaluer un modèle, en prédisant les erreurs qui l'entâchent.
+        \item  Cela revient à entraîner un modèle de classification supervisée à partir du modèle d'entrée.
+        \item Il faut donc chercher à décrire ces modèles grâce à des attributs intrinsèques. Ces caractéristiques reposent sur la forme géométrique du modèle tridimentionnel.
+        \item On pourra, si possible, rajoutter des attributs radiométriques, à partir de l'orthoimage de la scène, ou des attributs altimétriques en comparant le profil d'hauteur du modèle au Modèle Numérique de Surface.
+    \end{itemize}
+
+    Nous proposons donc les attributs basiques --- calculés aux niveaux du bâtiment --- suivants:
+    \begin{itemize}
+        \item attributs géométriques: nous calculons des statistiques (histogramme ou une liste contenant le maximum, le minimum, la moyenne, le médian et/ou l'écart type) de quelques propriétés géométriques des facettes du bâtiments (nombre de sommets, aire de la surface, angles entre les normales de facettes adjacentes et/ou toute les facettes, distance entre les centroides des facettes adjacentes et/ou toutes les facettes).
+        \item Nous estimons un modèle numérique de surface à partir du modèle, que nous comparions avec le MNS correspondant. L'histogramme de la différence de ces mesures donnera le vecteur attribut.
+        \item (à faire encore: un histogramme est calculé, par bâtiments, sur trois canaux (RVB) sur la zone correspondantes à l'empreinte de celui-ci).
+    \end{itemize}
+
+    \begin{itemize}
+        \item Selon le besoin de qualification, nous pouvons prédire la qualité correspondante.
+        \item Les différents niveaux d'analyse sont décrit par le niveau de l'arbre dans la Figure~\ref{fig::mindmap_errors}.
+        \item Au niveau $0$, nous décidons si le modèle mérite d'être qualifié. Au niveau $1$, nous discriminons entre les modèles valides ou non valides. La famille d'erreurs peut être prédite au niveau $2$, alors qu'au dernier niveau $3$, on détecte les erreurs atomiques.
+        \item Ces différents niveaux ne sont pas à confondre avec les Niveaux de Détails ($LoD$). On peut également contrôler ces derniers, au besoin, en ignorant les erreurs de Niveau de Détail $LoD$ au dessus d'un seuil. Dans notre cas ($LoD 2$), on ignore les erreurs relatives aux microstructures (i.e. $LoD > 2$).
+        \item Un dernier paramètre à préciser est l'hiérarchie des erreurs. Si le problème est hierarchisé, nous ne relevons que la famille d'erreurs représentant le plus petit Niveau de Détail. Nous obtenons un problème de classification Multi-Classe. Exemple: Si un modèle recoupe une erreur d'emprise imprécise et une erreur de sous segmentation d'une facette, nous ignorons la dernière. Dans le cas contraire, nous rapportons toutes les erreurs: cela devient un problème MultiLabel.
+        \item Ces différentes formulations possibles sont présentées dans la Figure~\ref{fig::classification_problems}.
+    \end{itemize}
+
+    \begin{figure}[H]
+        \begin{center}
+            \includestandalone[mode=buildnew, width=\textwidth]{classification_problem}
+            \caption{\label{fig::classification_problems} Toutes les formulations possibles du problème de qualification limité au $LoD 2$.}
+        \end{center}
+    \end{figure}
+
+    \subsection{Résultats expérimentales:}
+
+    \begin{itemize}
+        \item Les différents attributs obtenus sont concaténés dans un seul vecteur. Nous appliquons des Forêts Aléatoires~\cite{breiman2001random} à $800$ arbres et de profondeur maximale de $4$.
+        \item Ce classifieur peut en suite être adapté au cas de la classification Multi-Label avec la stratégie Un contre Tous.
+        \item Nous rapportons les premiers résultats issues des attributs géométriques et altimétriques, par validation croisée, dans les Tableaux~\ref{tab::multilab_d2} et~\ref{tab::multilab_d3}.
+    \end{itemize}
+    \begin{table}[H]
+        \begin{center}
+            \caption{\label{tab::multilab_d2}Qualification non hiérachiques au niveau $2$.}
+            \begin{tabular}{c c c c}
+                \toprule
+                {\bf Error} & {\bf Taux de bonne classification} & {\bf Précision} & {\bf Rappel} \\
+                \midrule
+                Erreurs de Bâtiments & $0.808$ & $0.392$ & $0.758$ \\
+                \midrule
+                Erreurs de Facettes & $0.915$ & $0.968$ & $0.933$ \\
+                \bottomrule
+            \end{tabular}
+        \end{center}
+    \end{table}
+    \begin{table}[H]
+        \begin{center}
+            \caption{\label{tab::multilab_d3}Qualification non hiérachiques au niveau $3$.}
+            \begin{tabular}{c c c c}
+                \toprule
+                {\bf Error} & {\bf Taux de bonne classification} & {\bf Précision} & {\bf Rappel} \\
+                \midrule
+                Buil. Under Seg. & $0.948$ & $0.63$ & $0.868$ \\
+                \midrule
+                Buil. Over Seg. & $0.971$ & $0.158$ & $1.00$ \\
+                \midrule
+                Footprint & $0.906$ & $0.236$ & $0.929$ \\
+                \midrule
+                Height & $0.997$ & $0.00$ & $NaN$ \\
+                \midrule
+                Fac. Under Seg. & $0.919$ & $0.14$ & $0.41$ \\
+                \midrule
+                Fac. Over Seg. & $0.991$ & $1.00$ & $0.988$ \\
+                \midrule
+                Fac. Impr. Seg. & $0.919$ & $0.00$ & $NaN$\\
+                \midrule
+                Slope & $0.974$ & $0.143$ & $1.00$\\
+                \bottomrule
+            \end{tabular}
+        \end{center}
+    \end{table}
+
     \section{Conclusion et perspectives}
 
     \bibliographystyle{abbrv}
