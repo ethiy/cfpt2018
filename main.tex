@@ -71,16 +71,9 @@
 
     Au moment de la qualification, trois paramètres entre en jeu: Le $LoD$, la \emph{finesse} et l'hiérarchie. En précisant un $LoD$ donné, les erreurs de plus grand Niveau de Détail sont ignorées. En fixant la \emph{finesse}, on discrimine que selon les erreurs du même ordre de \emph{finesse}. Le dernier paramètre est l'hiérarchie des erreurs. Si le problème est hierarchisé, nous ne relevons que la famille d'erreurs représentant le plus petit Niveau de Détail. Nous obtenons un problème de classification Multi-Classe. Exemple: Si un modèle recoupe une erreur d'emprise imprécise et une erreur de sous segmentation d'une facette, nous ignorons la dernière. Dans le cas contraire, nous rapportons toutes les erreurs: cela devient un problème MultiLabel.
 
-    Confronté à notre base de données --- presentée dans la section suivante --- on relève les erreurs suivantes:
+    Confronté à notre base de données ($LoD 2$) --- presentée dans la section suivante --- on relève les familles d'erreurs suivantes:
 
     \begin{enumerate}[label= (\roman*)., itemsep=0pt]
-        \item Bâtiments non qualifiables:
-        \begin{itemize}[itemsep=0pt]
-            \item Bâtiment incomplet: seul une partie du bâtiment est modélisée,
-            \item Bâtiment modifié: le bâtiment modéliser a changé est ne peut être qualifier,
-            \item Occlusion: le bâtiment est caché par de la végétaion ou autre,
-            \item Inconnu: Forme inconnue impossible à qualifier sans vérification sur le terrain;
-        \end{itemize}
         \item Erreurs de Bâtiment:
         \begin{itemize}[itemsep=0pt]
             \item Sous segmentation: deux bâtiments, ou plus, représentés comme un seul,
@@ -97,63 +90,44 @@
         \end{itemize}
     \end{enumerate}
 
-    Nous comparons ici notre taxonomie avec celle trouvé dans l'état de l'art. Les erreurs répertoriées dans~\cite{Michelin2013} ne sont pas loin de l'étiquetage que nous avons introduit. L'erreur de bâtiment inexistant est englobée par l'erreur bâtiment modifié. L'Occlusion Végétale représente une partie des erreurs d'occlusion possible que nous avons détectées. Les deux rendent les modèles $3D$ non qualifiables. L'étiquette Cours Manquante n'existe pas dans notre base de données mais peut être considérée comme une erreur de bâtiment. Empreinte inexacte et Contour Erroné font partie de l'étiquette Empreinte Imprécise. On ne cosidère pas Toit Imprécis comme une erreur \emph{atomique}: elle serait causée en grande partie par Segmentation Imprécise. La Sur Segementation et la Sous Segmentation peuvent concerner les bâtiments comme les facettes: elles sont subdivisées dans notre cas entre les deux familles d'erreurs. Nous retrouvons les différentes qualités définis dans l'étude menée par~\cite{Boudet2006} avec un niveau de quantification plus développé ($4$ contre $11$ actuels). Dans le modèle actuel, on peut déduire une confiance dans le modèle, en général, à partir des degré de confiance dans l'existance des erreurs atomiques.
-
     \subsection{Attributs calculés}
 
-    Nous proposons ici des attributs basiques calculés au niveaux du bâtiment:
-    \begin{itemize}[itemsep=0pt]
-        \item attributs géométriques: nous calculons des statistiques (histogramme ou une liste contenant le maximum, le minimum, la moyenne, le médian et/ou l'écart type) de quelques propriétés géométriques des facettes du bâtiments (nombre de sommets, aire de la surface, angles entre les normales de facettes adjacentes et/ou toute les facettes, distance entre les centroides des facettes adjacentes et/ou toutes les facettes).
-        \item Nous estimons un modèle numérique de surface à partir du modèle, que nous comparions avec le MNS correspondant. L'histogramme de la différence de ces mesures donnera le vecteur attribut.
-        \item (à faire encore: un histogramme est calculé, par bâtiments, sur trois canaux (RVB) sur la zone correspondantes à l'empreinte de celui-ci).
-    \end{itemize}
+    Nous proposons des attributs de bâtiments basiques. Les attributs géométriques sont calculés à partir de statistiques (histogramme ou une liste contenant le maximum, le minimum, la moyenne, le médian et/ou l'écart type) de quelques propriétés géométriques des facettes du bâtiments (nombre de sommets, aire de la surface, angles entre les normales de facettes adjacentes et/ou toute les facettes, distance entre les centroides des facettes adjacentes et/ou toutes les facettes). Les attributs altimétriques sont issus d'un histogramme de la différence entre l'estimation du MNS à partir du modèle $3D$ et le MNS correspondant.
 
     Les différents attributs obtenus sont, en suite, concaténés dans un seul vecteur. Nous appliquons des Forêts Aléatoires à $800$ arbres et de profondeur maximale de $4$. Ce classifieur peut en suite être adapté au cas de la classification Multi-Label avec la stratégie Un contre Tous.
 
     \section{Résultats:}
 
-    Nous appliquons cette approche à une surface de $\SI{0.2}{\km \squared}$ contenant $502$ bâtiments dans la ville d'\'Elancourt. C'est une région résidentielle dense qui comprends surtout des bâtiments à deux pans de toit, une école au Nord Ouest du quartier et une station-service au Sud. Les modèles d'entrées sont générés à partir d'une version industrialisée de~\cite{Durupt2006}. La méthode repose que une base de données d'empreinte de bâtiments (cadastrales ou autes) et l'extrapolation de la topologie du toit. Les toits simulés à partir des images orientées sont confrontés au MNS à $\SI{0.06}{\m}$ de résolution. Les façades du modèle relie la line de goutière aux sol. On obtient une modélisation $2.5D$ de la scène à un Niveau de Détail $LoD 2$.\\
-
-    Nous rapportons les premiers résultats issues des attributs géométriques et altimétriques, par validation croisée, dans les Tableaux~\ref{tab::multilab_d2} et~\ref{tab::multilab_d3}.
+    Nous appliquons cette approche à une surface de $\SI{0.2}{\km \squared}$ contenant $502$ bâtiments dans la ville d'\'Elancourt. Les modèles d'entrées sont générés à partir d'une base de données d'empreinte de bâtiments cadastrales. L'extrapolation de la topologie du toit se fait en simulant les toits possibles à partir des images orientées et en  confrontant ces toits à un MNS à $\SI{0.06}{\m}$ de résolution. Les façades du modèle relie la line de goutière aux sol~\cite{Durupt2006}. On obtient une modélisation $2.5D$ de la scène à un Niveau de Détail $LoD 2$. Nous rapportons les premiers résultats de tests issues des attributs géométriques et altimétriques, par validation croisée, dans les Tableau~\ref{tab::multilab_d3}.
 
     {\tiny
         \begin{table}[H]
-            \begin{minipage}{.5\linewidth}
-                \begin{center}
-                    \caption{\label{tab::multilab_d2}Qualification non hiérachiques de \emph{finesse} $ = 2$ et de $LoD 2$.}
-                    \begin{tabular}{x{2cm} x{1cm} x{1cm} x{1cm}}
-                        \toprule
-                        {\bf Error} & {\bf Précision globale} & {\bf Précision} & {\bf Rappel} \\
-                        \midrule
-                        Erreurs de Bâtiments & $0.808$ & $0.392$ & $0.758$ \\
-                        \midrule
-                        Erreurs de Facettes & $0.915$ & $0.968$ & $0.933$ \\
-                        \bottomrule
-                    \end{tabular}
-                \end{center}
+            \begin{minipage}{.48\linewidth}
+                Nous remarquons que les \textbf{Erreurs de Bâtiments} sont moins susceptibles d'être détectés (faible précision) que les \textbf{Erreurs de Facettes}. Ceci peut être expliqué par le faite que ces erreurs sont moins présentes dans nos échantillons (le ratio de la première famille est de $24.0\%$ parmi les $502$ bâtiments). C'est aussi le cas de \textbf{Pente Imprécise}, de \textbf{Segmentation Imprécise} et de \textbf{Sous Segmentation} qui sont très mal représentées aussi, avec $6.87\%$, $6.57\%$ et $2.67\%$, respectivement, de présence parmi tous les bâtiments à qualifier. Cela explique aussi pourquoi on obtient des précisions globales proche de $1$ alors que les précisions sont très faible.\\
+                Nous devrons donc étudier l'apport des attributs radiométriques pour la qualification ainsi que d'autres attributs plus finement construits. Le risque est, cependant, de surajuster le classifieur à notre base de données. Il faut, ainsi, chercher à enrichir la base d'apprentissage davantage afin d'obtenir des échantillons plus représentatifs tout en prêtant attention à ne pas introduire d'autres erreurs moins représentées.
             \end{minipage}
-            \begin{minipage}{.5\linewidth}
+            \begin{minipage}{.46\linewidth}
                 \begin{center}
                     \caption{\label{tab::multilab_d3}Qualification non hiérachiques de \emph{finesse} $ = 3$ et de $LoD 2$.}
-                    \begin{tabular}{x{3cm} x{1cm} x{1cm} x{1cm}}
+                    \begin{tabular}{x{2.5cm} x{1cm} x{1cm} x{1cm}}
                         \toprule
                         {\bf Error} & {\bf Précision globale} & {\bf Précision} & {\bf Rappel} \\
                         \midrule
-                        Buil. Under Seg. & $0.948$ & $0.63$ & $0.868$ \\
+                        \textbf{Sous Seg. Bât.} & $0.948$ & $0.63$ & $0.868$ \\
                         \midrule
-                        Buil. Over Seg. & $0.971$ & $0.158$ & $1.00$ \\
+                        \textbf{Sur Seg. Bât.} & $0.971$ & $0.158$ & $1.00$ \\
                         \midrule
-                        Footprint & $0.906$ & $0.236$ & $0.929$ \\
+                        \textbf{Emp. Impr.} & $0.906$ & $0.236$ & $0.929$ \\
                         \midrule
-                        Height & $0.997$ & $0.00$ & $NaN$ \\
+                        \textbf{Haut. Impr.} & $0.997$ & $0.00$ & $NaN$ \\
                         \midrule
-                        Fac. Under Seg. & $0.919$ & $0.14$ & $0.41$ \\
+                        \textbf{Sous Seg. Fac.} & $0.919$ & $0.14$ & $0.41$ \\
                         \midrule
-                        Fac. Over Seg. & $0.991$ & $1.00$ & $0.988$ \\
+                        \textbf{Sur Seg. Fac.} & $0.991$ & $1.00$ & $0.988$ \\
                         \midrule
-                        Fac. Impr. Seg. & $0.919$ & $0.00$ & $NaN$\\
+                        \textbf{Seg. Fac. Impr.} & $0.919$ & $0.00$ & $NaN$\\
                         \midrule
-                        Slope & $0.974$ & $0.143$ & $1.00$\\
+                        \textbf{Pente Impr.} & $0.974$ & $0.143$ & $1.00$\\
                         \bottomrule
                     \end{tabular}
                 \end{center}
@@ -162,6 +136,8 @@
     }
 
     \section{Conclusion et perspectives}
+
+    Nous avons proposé un nouvel cadre de qualification de modèles $3D$ polyhédriques. Il repose sur une taxonomie hiérarchisée d'erreurs sémantiques indépendentes des modèles à qualifier. Un modèle de classification supervisée est ainsi entraîner à partir d'attributs géométriques et altimètriques des bâtiments reconstruits, afin de prédire les erreurs d'un modèle. Une démonstration sur $502$ bâtiments donnent des mauvais résultats pour des labels mal représentés. La prochaine étape consiste à rajoutée des attributs radiométriques ainsi que l'augmentation de la base d'apprentissage. Nous penserons ultérieurement à explorer l'apprentissage non supervisé pour la découverte de nouvelle erreurs atomiques sans annotation préalable.
 
     \bibliographystyle{abbrv}
     \bibliography{references}
