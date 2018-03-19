@@ -20,7 +20,7 @@
 \usepackage{enumitem}
 
 \usepackage{float}
-\usepackage{subcaption}
+\usepackage[tablename=Tab.]{caption}
 \captionsetup{labelsep=period}
 
 \newcounter{SubFigCounter}
@@ -33,7 +33,7 @@
     }
     \author{
         \begin{tabular}[t]{c@{\extracolsep{4em}}c@{\extracolsep{4em}}c@{\extracolsep{4em}}c}
-            Oussama Ennafii${}^1$ & Clément Mallet${}^1$ & Arnaud Le-Bris${}^1$ & Florent Lafarge${}^2$ \\
+            Oussama Ennafii${}^1$ & Arnaud Le-Bris${}^1$ & Clément Mallet${}^1$ & Florent Lafarge${}^2$ \\
         \end{tabular}
         {}\\
         \\
@@ -47,46 +47,45 @@
     \thispagestyle{empty}
 
     \section{Introduction}
-    Notre travail s'intéresse à l'évaluation sémantique de modèle polyhédriques urbains à un Niveau de Détails ($LoD$) prédéfinis~\cite{kolbe2005citygml}. Dans ce qui suit, sauf si précisé autrement, on entend par modèle $3D$, ou modèle reconstruit, un modèle polyhédrique de bâtiment résultant d'une méthode de reconstruction --- ou modélisation --- urbaine. Un modèle est reconstruit au niveau $LoD 1$ revient à dire que c'est une extrusion de bâtiment. Une modélisation de niveau $LoD 2$ correspond à une simplification géométrique du bâtiments. Ce dernier niveau ignore les microstructures, comme cheminée ou chien assis, qui sont prisent en compte à partir du niveau $LoD 3$. $LoD 4$ concene des modèles qui contiennent des objets modélisants l'intérieur.\\
+    Notre travail s'intéresse à l'évaluation sémantique de modèle polyhédriques urbains à un Niveau de Détails ($LoD$) prédéfinis~\cite{kolbe2005citygml}. Dans ce qui suit, sauf si précisé autrement, on entend par modèle $3D$, ou modèle reconstruit, un modèle polyhédrique de bâtiment résultant d'une méthode de reconstruction urbaine. Un modèle est reconstruit au niveau $LoD 1$ revient à dire que c'est une extrusion de bâtiment. Une modélisation de niveau $LoD 2$ correspond à une simplification géométrique du bâtiments. Ce niveau ignore les microstructures, comme cheminée ou chien assis, qui sont prisent en compte à partir du niveau $LoD 3$. $LoD 4$ modélise rejoutte les objets intérieurs.\\
     Les modèles $3D$ urbains ont un large champs d'application~\cite{Biljecki2015}. En conséquence, la reconstruction automatique de scènes urbaines est l'objet d'intérêt de la communauté scientifique autant que les industriels~\cite{Musialski2012}. Cependant, même les derniers algorithmes de modélisation automatiques urbaines ne sont pas viables du point de vue opérationel.\\
-    L'évaluation sémantique de reconstruction urbaines reste mal étudiée~\cite{nguatem2017modeling}. L'idée consiste à caractériser et classer les erreurs qui peuvent affecter les modèles $3D$ de bâtiments. En réalité, ces méthodes de diagnostique de modèles de bâtiments pourraient être utilisées pour la \textbf{détection de changement} aussi bien que pour la \textbf{correction des modèles} urbains, l'évaluation, et ainsi \textbf{la sélection, d'algorithmes} de reconstruction urbaines ou encore l'évaluation de la qualité de \textbf{reconstruction par la foule}.
+    L'évaluation sémantique de reconstruction urbaines reste mal étudiée. Cela consiste à caractériser et classer les erreurs qui peuvent affecter les modèles $3D$ de bâtiments. Ces méthodes de diagnostique de modèles de bâtiments pourraient être utilisées pour la \textbf{détection de changement} aussi bien que pour la \textbf{correction des modèles} urbains, l'évaluation, et ainsi \textbf{la sélection, d'algorithmes} de reconstruction urbaines ou encore l'évaluation de la qualité de \textbf{reconstruction par la foule}.
 
-    Dans ce résumé, Une nouvelle \textbf{taxonomie d'erreurs} est considérée. Elle est indépendente des démarches de reconstruction $3D$ et flexibles quant aux différents types de modèles en entrée. La qualification est donc formulée comme des \textbf{problèmes de classification supervisée} qui dépendent des niveaux de détails recherchés. Une \textbf{référence d'attributs} est calculée à partir de la géométrie du modèle de bâtiments en entrée. Des attributs fondés sur la comparaison avec les orthoimages ou le Modèle Numérique de surface. En conséquence, notre méthode accepte des données les moins complexes possibles.
+    Dans ce résumé, Une nouvelle \textbf{taxonomie d'erreurs} est considérée. Elle est indépendente des démarches de reconstruction $3D$ et flexible quant aux différents types de modèles en entrée. La qualification est donc formulée comme des \textbf{problèmes de classification supervisée} qui dépendent des niveaux de détails recherchés. Une \textbf{référence d'attributs} est calculée à partir de la géométrie du modèle de bâtiments en entrée. Des attributs fondés sur la comparaison avec les orthoimages ou le Modèle Numérique de surface peuvent être aussi pris en compte. L'idée est que notre méthode prenne en entrée les données les moins complexes possibles.
 
     \section{\'Etat de l'art}
 
-    Les différentes méthodes de qualification de modèles $3D$ urbains peuvent être classées selon leurs critères d'évaluation: indices géométriques de précision ou erreurs sémantiques (topologiques ou géométriques). Les indices géométriques permettent de résumer la précision d'une modélisation à partir de la précision des points d'intérêts, des surfaces ou des volumes des modèles $3D$ en les comparant à des données de plus grandes précision~\cite{Zeng2014, Kaartinen2005}. Cependant, ces indices ne permettent pas de bien décrire les défauts d'une reconstruction. En effet, un simple maillage $3D$ de points LiDAR ou de MNS donneront une meilleur reconstruction dans ce cas~\cite{rottensteiner2014results}. Des erreurs sémantiques pourrait palier à ce problème. Ces erreurs peuvent être relevées, dans un cadre interractif, en comparant avec les données qui ont servis à la reconstruction~\cite{OudeElberink2010}. Ce procédé peut être automatisé en partant d'un modèle d'erreur prétabli. La taxonomie proposée peut reposer sur le paradigme des feux de circulation: Correct, Acceptable, Généralisé et Faux~\cite{Boudet2006}. La catégorisation des erreurs peut aussi adopter le point de vue des méthodes de reconstruction. Les erreurs sont discriminées en erreurs d'empreinte (contour erroné, bâtiment inexistant, cours intérieur manquante et empreinte imprécise), qui proviendrait des données d'entrées de la modélisation (sous-segmentation, sur-segmentation, toit inexact, translation en Z), en erreurs de reconstruction intinsèques à la méthode et en erreur due à l'occlusion végétale~\cite{Michelin2013}. L'évaluation d'un modèle urbain est donc faite grâce une classification supervisée qui prend comme label les erreurs de la taxonomie. Pour caractériser les modèles d'entrée, des attributs sont calculés à partir des images orientés et Modèle Numérique de Surface (MNS), en comprant des segments $3D$ ou des indices de corrélation de texture, par exemple. Le risque, dans ce cas de figure, est que la taxonomie peut être trop générale comme elle peut être surajustée par rapport à une scène ou une méthode de reconstruction données.
+    Les différentes méthodes de qualification de modèles $3D$ urbains peuvent être classées selon leurs critères d'évaluation: indices géométriques de précision ou erreurs sémantiques (topologiques ou géométriques). Les indices géométriques permettent de résumer la précision d'une modélisation à partir de la précision des points d'intérêts, des surfaces ou des volumes des modèles $3D$ en les comparant à des données de plus grandes précision~\cite{Zeng2014}. Ces indices ne permettent pas de bien décrire les défauts d'une reconstruction. Une taxonomie d'erreurs sémantiques est donc envisageable. Elle peut reposer sur le paradigme des feux de circulation: Correct, Acceptable, Généralisé et Faux~\cite{Boudet2006} comme elle peut adopter le point de vue des méthodes de reconstruction. Les erreurs sont, par exemple, discriminées en erreurs d'empreinte (contour erroné, bâtiment inexistant, cours intérieur manquante et empreinte imprécise), en erreurs de reconstruction intinsèques (sous-segmentation, sur-segmentation, toit inexact, translation en Z) à la méthode et en erreur due à l'occlusion végétale~\cite{Michelin2013}. L'évaluation d'un modèle urbain est donc faite grâce une classification supervisée qui prend comme label les erreurs ainsi définies. Pour caractériser les modèles d'entrée, des attributs sont calculés à partir des images orientés et Modèle Numérique de Surface (MNS), en comparant des segments $3D$ ou des indices de corrélation de texture, par exemple. Dans ce cas de figure, la taxonomie risque d'être trop générale comme elle peut être surajustée par rapport à une scène ou une méthode de reconstruction données.
 
     \section{Méthode proposée}
 
-    La méthode proposée consiste à évaluer un modèle $3D$, en prédisant les erreurs qui l'affectent. Ces erreurs sont définis dans une taxonomie hiérarchisée. Selon le besoin de la qualification, nous considérons les étiquettes des erreurs correspondantes. Afin de construire ce modèle de prédiction, un modèle de classification supervisée est entraîné. Notre méthode est flexible et décrit les modèles urbains grâce à des attributs géométriques intrinsèques en pouvant rajoutter des attributs radiométriques, à partir de l'orthoimage de la scène, ou des attributs altimétriques, en comparant le profil d'hauteur du modèle au Modèle Numérique de Surface.
+    La méthode proposée consiste à évaluer un modèle $3D$, en prédisant les erreurs qui l'affectent. Ces erreurs sont définis dans une taxonomie hiérarchisée. Selon le besoin de la qualification, nous considérons les labels correspondantes. Un modèle de classification supervisée est ensuite entraîné afin de prédire, dans le future, la qualité du bâtiments reconstruit. Notre méthode flexible décrit les modèles urbains grâce à des attributs géométriques intrinsèques, en rajouttant des attributs radiométriques, à partir de l'orthoimage de la scène, ou des attributs altimétriques, en comparant le profil d'hauteur du modèle au Modèle Numérique de Surface.
 
     \subsection{Taxonomie d'erreurs}
 
     Pour classer nos erreurs dans la nouvelle taxanomie, nous porposons deux critères: Le Niveau de Détails $LoD$ et la \emph{finesse} de l'erreur. La \emph{finesse} reprèsente le niveau de sémantisation. Une erreur est dite de \emph{finesse} maximale si elle correspond à une action unitaire de la part d'un opérateur au moment de la correction. On définit ainsi ce que l'on appelera une erreur atomique.\\
+    Du point de vue opérationnel, les bâtiments ne sont pas tous qualifiables. Nous discriminons, donc, entre bâtiments \emph{qualifiables} et bâtiments \emph{non qualifiables}. Cette classification est considérer de \emph{finesse} zero. Au niveau de \emph{finesse} suivant, les bâtiments sont classés selon s'ils sont \emph{valides} ou \emph{erronés}. Ces derniers sont ensuite divisés selon le Niveau de Détail $LoD$ en famille d'erreurs de \emph{finesse} $2$. En effet, une famille d'erreurs, nommée: \emph{Erreurs de Bâtiment}, est consacrée aux défauts qui affectent le bâtiment en entier (niveau $LoD 0\cup LoD 1$). La famille \emph{Erreurs de Facettes} contient les erreurs qui concernent les facettes --- façades ou toit --- du bâtiments (niveau $LoD 2$). La dernière famille, \emph{Erreurs de Microstructures}, englobe les erreurs qui atteignent les mircrostructures reconstruites (niveau $LoD 3$). Ces familles contiennent chacune des erreurs atomiques de \emph{finesse} maximale égale à $3$.
 
-    Du point de vue opérationnel, les bâtiments ne sont pas tous qualifiables. Nous discriminons, donc, entre bâtiments \emph{qualifiables} et bâtiments \emph{non qualifiables}. Cette classification est considérer de \emph{finesse} zero. Au niveau de \emph{finesse} suivant, les bâtiments sont classés en bâtiments \emph{valides} ou bâtiments \emph{erronés}. Ces derniers sont ensuite divisés selon le Niveau de Détail $LoD$ en famille d'erreurs de \emph{finesse} $2$. En effet, une famille d'erreurs, nommée: \emph{Erreurs de Bâtiment}, est consacrée aux défauts qui affectent le bâtiment en entier (niveau $LoD 0\cup LoD 1$). La famille \emph{Erreurs de Facettes} contient les erreurs qui concernent les facettes --- façades ou toit --- du bâtiments (niveau $LoD 2$). La dernière famille, \emph{Erreurs de Microstructures}, englobe les erreurs qui atteignent les mircrostructures reconstruites (niveau $LoD 3$). Ces familles contiennent chacune des erreur atomique de \emph{finesse} maximale égale à $3$.
+    Cette catégorisation est indépendente de la méthode de reconstruction ou de la scène à modéliser. L'étiquetage est non redondant: les erreurs atomiques relevées sont indépendentes entre elles et ne représentent que des défauts particuliers, topologiques ou géométriques. Les erreurs topologiques relèvent les erreurs de structure du modèle reconstruit. Les erreurs géométriques mettent en évidence l'imprécision de la reconstruction. Chaque erreur atomique se voit attribuée une note, sur une échelle de $0$ à $10$, et représente le degré de confiance en la présence du défaut. Cela revient à une discrétisation de la probabilité d'existence de l'erreur. Les erreurs de finesse inférieur héritent des erreurs de leurs filles (i.e. de \emph{finesse} plus grande). En effet, elles sont aussi sûrs que les erreurs qu'elle contiennent. Leur note attribuée est donc la moyenne des notes des erreurs filles.
 
-    Cette catégorisation est indépendente de la méthode de reconstruction ou de la scène à modéliser. L'étiquetage est non redondant: les erreurs atomiques relevées sont indépendentes entre elles et ne représentent que des défauts particuliers, topologiques ou géométriques. Les erreurs topologiques relèvent les erreurs de structure du modèle reconstruit. Les erreurs géométriques mettent en évidence l'imprécision de la reconstruction. Chaque erreur atomique se voit attribuée une note sur une échelle de $0$ à $10$. Elle représente le degré de confiance en la présence du défaut. Cela revient à une discrétisation de la probabilité d'existence de l'erreur. Les erreurs de finesse inférieur héritent des erreurs de leurs filles (i.e\. de \emph{finesse} plus grande). En effet, elles sont aussi sûrs que les erreurs qu'elle contiennent. Leur note attribuée est donc la moyenne des notes des erreurs filles.
+    Au moment de la qualification, trois paramètres entre en jeu: un niveau de $LoD$, un niveau de \emph{finesse} et l'hiérarchie. En précisant un $LoD$ donné, les erreurs de plus grand Niveau de Détail sont ignorées. En fixant une \emph{finesse} donnée, on ne discrimine que selon les erreurs du même ordre de \emph{finesse}. Le dernier paramètre est l'hiérarchie des erreurs. Si le problème est hierarchisé, nous ne relevons que la famille d'erreurs représentant le plus petit Niveau de Détail: c'est un problème de classification Multi-Classe. Dans le cas contraire, nous rapportons toutes les erreurs: c'est un problème Multi-Label.
 
-    Au moment de la qualification, trois paramètres entre en jeu: Le $LoD$, la \emph{finesse} et l'hiérarchie. En précisant un $LoD$ donné, les erreurs de plus grand Niveau de Détail sont ignorées. En fixant la \emph{finesse}, on discrimine que selon les erreurs du même ordre de \emph{finesse}. Le dernier paramètre est l'hiérarchie des erreurs. Si le problème est hierarchisé, nous ne relevons que la famille d'erreurs représentant le plus petit Niveau de Détail. Nous obtenons un problème de classification Multi-Classe. Exemple: Si un modèle recoupe une erreur d'emprise imprécise et une erreur de sous segmentation d'une facette, nous ignorons la dernière. Dans le cas contraire, nous rapportons toutes les erreurs: cela devient un problème MultiLabel.
-
-    Confronté à notre base de données ($LoD 2$) --- presentée dans la section suivante --- on relève les familles d'erreurs suivantes:
+    Confronté à notre base de données (de $LoD 2$) --- presentée dans la section suivante --- on relève les familles d'erreurs suivantes:
 
     \begin{enumerate}[label= (\roman*)., itemsep=0pt]
         \item Erreurs de Bâtiment:
         \begin{itemize}[itemsep=0pt]
             \item Sous segmentation: deux bâtiments, ou plus, représentés comme un seul,
-            \item Sur segmentation: un bâtiments est modélisé en deux ou plusieurs bâtiments,
+            \item Sur segmentation: un bâtiment est modélisé en deux ou plusieurs bâtiments,
             \item Empreinte Imprécise: l'empreinte du bâtiment défectueuse,
-            \item Hauteur Imprécise: hauteur de bâtiment mal estimée;
+            \item Hauteur Imprécise: l'hauteur de bâtiment est mal estimée;
         \end{itemize}
         \item Erreurs de Facette:
         \begin{itemize}[itemsep=0pt]
-            \item Sous segmentation: deux facettes, ou plus, représentés comme un seul,
-            \item Sur segmentation: un facettes est modélisé en deux ou plusieurs bâtiments,
+            \item Sous segmentation: deux facettes, ou plus, représentés comme une seule,
+            \item Sur segmentation: une facette est modélisée en deux ou plusieurs facette,
             \item Segmentation imprécise: les arrêtes qui séparent les facettes sont inexactes,
-            \item Pente Imprécise: pente inexacte.
+            \item Pente Imprécise: la pente de la facette est inexacte.
         \end{itemize}
     \end{enumerate}
 
@@ -94,50 +93,55 @@
 
     Nous proposons des attributs de bâtiments basiques. Les attributs géométriques sont calculés à partir de statistiques (histogramme ou une liste contenant le maximum, le minimum, la moyenne, le médian et/ou l'écart type) de quelques propriétés géométriques des facettes du bâtiments (nombre de sommets, aire de la surface, angles entre les normales de facettes adjacentes et/ou toute les facettes, distance entre les centroides des facettes adjacentes et/ou toutes les facettes). Les attributs altimétriques sont issus d'un histogramme de la différence entre l'estimation du MNS à partir du modèle $3D$ et le MNS correspondant.
 
-    Les différents attributs obtenus sont, en suite, concaténés dans un seul vecteur. Nous appliquons des Forêts Aléatoires à $800$ arbres et de profondeur maximale de $4$. Ce classifieur peut en suite être adapté au cas de la classification Multi-Label avec la stratégie Un contre Tous.
+    Les différents attributs obtenus sont, en suite, concaténés dans un seul vecteur. Nous appliquons des Forêts Aléatoires à $800$ arbres et de profondeur maximale de $4$. Ce classifieur est adapté, au cas de la classification Multi-Label, en utlisant la stratégie Un contre Tous.
 
     \section{Résultats:}
 
-    Nous appliquons cette approche à une surface de $\SI{0.2}{\km \squared}$ contenant $502$ bâtiments dans la ville d'\'Elancourt. Les modèles d'entrées sont générés à partir d'une base de données d'empreinte de bâtiments cadastrales. L'extrapolation de la topologie du toit se fait en simulant les toits possibles à partir des images orientées et en  confrontant ces toits à un MNS à $\SI{0.06}{\m}$ de résolution. Les façades du modèle relie la line de goutière aux sol~\cite{Durupt2006}. On obtient une modélisation $2.5D$ de la scène à un Niveau de Détail $LoD 2$. Nous rapportons les premiers résultats de tests issues des attributs géométriques et altimétriques, par validation croisée, dans les Tableau~\ref{tab::multilab_d3}.
+    Nous appliquons l'approche, décrite précédemment, à une surface de $\SI{0.2}{\km \squared}$ contenant $502$ bâtiments dans la ville d'\'Elancourt. Les modèles d'entrées sont générés à partir d'une base de données d'empreinte de bâtiments cadastrales. L'extrapolation de la topologie du toit se fait en simulant les toits possibles, à partir des images orientées, avant de les confronter à un MNS à $\SI{0.06}{\m}$ de résolution. Les façades du modèle relie la line de goutière aux sol~\cite{Durupt2006}. On obtient une modélisation $2.5D$ de la scène à un Niveau de Détail $LoD 2$. Nous rapportons des premiers résultats de tests issues des attributs géométriques et altimétriques, par validation croisée, dans les Tableau~\ref{tab::multilab_d3}.
 
     {\tiny
         \begin{table}[H]
             \begin{minipage}{.48\linewidth}
-                Nous remarquons que les \textbf{Erreurs de Bâtiments} sont moins susceptibles d'être détectés (faible précision) que les \textbf{Erreurs de Facettes}. Ceci peut être expliqué par le faite que ces erreurs sont moins présentes dans nos échantillons (le ratio de la première famille est de $24.0\%$ parmi les $502$ bâtiments). C'est aussi le cas de \textbf{Pente Imprécise}, de \textbf{Segmentation Imprécise} et de \textbf{Sous Segmentation} qui sont très mal représentées aussi, avec $6.87\%$, $6.57\%$ et $2.67\%$, respectivement, de présence parmi tous les bâtiments à qualifier. Cela explique aussi pourquoi on obtient des précisions globales proche de $1$ alors que les précisions sont très faible.\\
+                Nous remarquons que les \textbf{Erreurs de Bâtiments} sont de faible précision comparées aux \textbf{Erreurs de Facettes}. Ceci peut être expliqué par le faite que ces erreurs sont moins présentes dans nos échantillons ($24.0\%$ parmi les $502$ bâtiments). C'est aussi le cas de \textbf{Pente Imprécise}, de \textbf{Segmentation Imprécise} et de \textbf{Sous Segmentation} qui sont très mal représentées aussi, avec $6.87\%$, $6.57\%$ et $2.67\%$, respectivement, de présence parmi tous les bâtiments à qualifier. Cela explique aussi pourquoi on obtient des précisions globales proche de $1$ alors que les précisions sont très faible.\\
                 Nous devrons donc étudier l'apport des attributs radiométriques pour la qualification ainsi que d'autres attributs plus finement construits. Le risque est, cependant, de surajuster le classifieur à notre base de données. Il faut, ainsi, chercher à enrichir la base d'apprentissage davantage afin d'obtenir des échantillons plus représentatifs tout en prêtant attention à ne pas introduire d'autres erreurs moins représentées.
             \end{minipage}
             \begin{minipage}{.46\linewidth}
-                \begin{center}
-                    \caption{\label{tab::multilab_d3}Qualification non hiérachiques de \emph{finesse} $ = 3$ et de $LoD 2$.}
-                    \begin{tabular}{x{2.5cm} x{1cm} x{1cm} x{1cm}}
-                        \toprule
-                        {\bf Error} & {\bf Précision globale} & {\bf Précision} & {\bf Rappel} \\
-                        \midrule
-                        \textbf{Sous Seg. Bât.} & $0.948$ & $0.63$ & $0.868$ \\
-                        \midrule
-                        \textbf{Sur Seg. Bât.} & $0.971$ & $0.158$ & $1.00$ \\
-                        \midrule
-                        \textbf{Emp. Impr.} & $0.906$ & $0.236$ & $0.929$ \\
-                        \midrule
-                        \textbf{Haut. Impr.} & $0.997$ & $0.00$ & $NaN$ \\
-                        \midrule
-                        \textbf{Sous Seg. Fac.} & $0.919$ & $0.14$ & $0.41$ \\
-                        \midrule
-                        \textbf{Sur Seg. Fac.} & $0.991$ & $1.00$ & $0.988$ \\
-                        \midrule
-                        \textbf{Seg. Fac. Impr.} & $0.919$ & $0.00$ & $NaN$\\
-                        \midrule
-                        \textbf{Pente Impr.} & $0.974$ & $0.143$ & $1.00$\\
-                        \bottomrule
-                    \end{tabular}
-                \end{center}
+                \begin{minipage}{.05\linewidth}
+                    \phantom{Stay Away}
+                \end{minipage}
+                \begin{minipage}{.95\linewidth}
+                    \begin{flushright}
+                        \begin{tabular}{x{2.5cm} x{1cm} x{1cm} x{1cm}}
+                            \toprule
+                            {\bf Error} & {\bf Précision globale} & {\bf Précision} & {\bf Rappel} \\
+                            \midrule
+                            \textbf{Sous Seg. Bât.} & $0.948$ & $0.63$ & $0.868$ \\
+                            \midrule
+                            \textbf{Sur Seg. Bât.} & $0.971$ & $0.158$ & $1.00$ \\
+                            \midrule
+                            \textbf{Emp. Impr.} & $0.906$ & $0.236$ & $0.929$ \\
+                            \midrule
+                            \textbf{Haut. Impr.} & $0.997$ & $0.00$ & $NaN$ \\
+                            \midrule
+                            \textbf{Sous Seg. Fac.} & $0.919$ & $0.14$ & $0.41$ \\
+                            \midrule
+                            \textbf{Sur Seg. Fac.} & $0.991$ & $1.00$ & $0.988$ \\
+                            \midrule
+                            \textbf{Seg. Fac. Impr.} & $0.919$ & $0.00$ & $NaN$\\
+                            \midrule
+                            \textbf{Pente Impr.} & $0.974$ & $0.143$ & $1.00$\\
+                            \bottomrule
+                        \end{tabular}
+                        \caption{\label{tab::multilab_d3}Qualification non hiérachiques de \emph{finesse} $ = 3$ et de $LoD 2$.}
+                    \end{flushright}
+                \end{minipage}
             \end{minipage}
         \end{table}
     }
 
     \section{Conclusion et perspectives}
 
-    Nous avons proposé un nouvel cadre de qualification de modèles $3D$ polyhédriques. Il repose sur une taxonomie hiérarchisée d'erreurs sémantiques indépendentes des modèles à qualifier. Un modèle de classification supervisée est ainsi entraîner à partir d'attributs géométriques et altimètriques des bâtiments reconstruits, afin de prédire les erreurs d'un modèle. Une démonstration sur $502$ bâtiments donnent des mauvais résultats pour des labels mal représentés. La prochaine étape consiste à rajoutée des attributs radiométriques ainsi que l'augmentation de la base d'apprentissage. Nous penserons ultérieurement à explorer l'apprentissage non supervisé pour la découverte de nouvelle erreurs atomiques sans annotation préalable.
+    Nous avons proposé un nouvel cadre de qualification de modèles $3D$ polyhédriques. Il repose sur une taxonomie hiérarchisée d'erreurs sémantiques indépendentes des modèles à qualifier. Nous nous servons d'une classification supervisée d'attributs géométriques et altimètriques des bâtiments reconstruits, afin de prédire les erreurs d'un modèle en entrée. Une démonstration sur $502$ bâtiments donnent des mauvais résultats pour des labels qui sont mal représentés. La prochaine étape consiste à rajoutée des attributs radiométriques ainsi que l'augmentation de la base d'apprentissage et d'étudier leur apport respectif. Nous penserons, ultérieurement, à explorer l'apprentissage non supervisé qui n'aurait pas besoin de taxonomie préétablie ou, encore, une approche semi-supervisée afin d'enrichir notre taxonomie.
 
     \bibliographystyle{abbrv}
     \bibliography{references}
