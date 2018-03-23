@@ -24,9 +24,6 @@
 \usepackage{float, wrapfig}
 \usepackage[tablename=Tab.]{caption}
 
-\newcounter{SubFigCounter}
-\setcounter{SubFigCounter}{1}
-
 \begin{document}
     \date{}
     \title{
@@ -102,7 +99,7 @@
         \vspace{-25pt}
         \begin{tabular}{x{2.5cm} x{1cm} x{1cm} x{1cm}}
             \toprule
-            {\bf Erreur} & {\bf Précision globale} & {\bf Précision} & {\bf Rappel} \\
+            {\bf Erreur} & \rotatebox{90}{\bf Précision} \rotatebox{90}{\bf globale} & \rotatebox{90}{\bf Précision} & \rotatebox{90}{\bf Rappel} \\
             \midrule
             \textbf{Sous Seg. Bât.} & $0,948$ & $0,63$ & $0,868$ \\
             \midrule
