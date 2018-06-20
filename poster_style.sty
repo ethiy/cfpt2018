@@ -6,6 +6,12 @@
 \setlength{\bibsep}{0.0mm}
 
 \usepackage[font={small, color=IGNDarkGrey}, figurename=Fig., tablename=Tab., labelfont={bf, color=IGNGreen}]{caption}
+\usepackage{subcaption}
+\DeclareCaptionFont{tiny}{\tiny}
+\captionsetup[subtable]{font={tiny, color=IGNDarkGrey},textfont=normalfont,justification=raggedright}
+\usepackage{array}
+\newcolumntype{x}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+
 
 \usepackage{enumitem}
 \usepackage{graphicx}
@@ -18,7 +24,7 @@
 
 \usepackage{booktabs}
 
-\usepackage{amsmath}
+\usepackage{mathrsfs, amsmath}
 \usepackage{amssymb}
 
 \usepackage{relsize}
