@@ -119,7 +119,7 @@
                 \item Optional descriptors:
                 \begin{itemize}[label=$\blacktriangleright$, font=\color{blue}, itemsep=10pt]
                     \item \textbf{Altimetric} features based on the residual of the model height profile and the correponding DSM\@;
-                    \item \textbf{Radiometric} features based on building wise normalized histograms of angle correlation\footnote{$C_I(s) \triangleq \{ \frac{\nabla I(p) . \vec{n}(s)}{\vert\nabla I(p)\vert}: p \in I \text{ and } p \cap s \neq \emptyset \}$} between gradients and footprint segments;
+                    \item \textbf{Radiometric} features based on building wise normalized histograms of angle correlation\footnote{$C_I(s) \triangleq \Big(\frac{\nabla I(p) . \vec{n}(s)}{\vert\vert\nabla I(p)\vert\vert}\Big)_{p \in I, p \cap s \neq \emptyset}$} between gradients and footprint segments;
                 \end{itemize}
             \end{enumerate}
         }
